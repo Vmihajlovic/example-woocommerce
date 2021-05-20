@@ -7,15 +7,34 @@ import { navigateToCheckout } from "./navigateToCheckout.js";
 import { updateAddress } from "./updateAddress.js";
 import { submitCheckout } from "./submitCheckout.js";
 
-export const options = {};
+export const options = {
+  stages: [
+    { target: 50, duration: "1m"  },
+    { target: 50, duration: "2m" },
+    { target: 0, duration: "1m" }
+ ],
+ thresholds: {
+     "http_req_duration": ["p(95)<500"]
+ },
+ ext: {
+     loadimpact: {
+         projectID: 3113635, //3481255
+         name: "Woocommerce example",
+         distribution: {
+             scenarioLabel1: { loadZone: "amazon:ie:dublin", percent: 50 },
+             scenarioLabel2: { loadZone: "amazon:us:ashburn", percent: 50 }
+         }
+     }
+ }
+};
 
 const vars = [];
 
 const isDebug = true; // true for additonal debug
 
 export default function main() {
-  navigateHomepage();
-  sleep(getRandom(2, 5));
+  // navigateHomepage();
+  // sleep(getRandom(2, 5));
   addToCart();
   sleep(getRandom(2, 5));
   navigateToCart();
